@@ -1,14 +1,14 @@
-FROM python:3.10-slim-bookworm
+FROM python:3.10.8-slim-buster
 
-RUN apt update && apt upgrade -y && apt install git -y && apt clean
+RUN apt update && apt upgrade -y
+RUN apt install git -y
 
-COPY requirements.txt /requirements.txt
-
-RUN pip3 install --upgrade pip && pip3 install -U -r /requirements.txt
-
-RUN mkdir /TheMovieProviderBot
+# Copy all files first to the app directory
 WORKDIR /TheMovieProviderBot
+COPY . .
 
-COPY start.sh /start.sh
+# Install dependencies
+RUN pip3 install -U pip && pip3 install -U -r requirements.txt
 
-CMD ["/bin/bash", "/start.sh"]
+# Start the bot
+CMD ["/bin/bash", "start.sh"]
